@@ -28,7 +28,7 @@ public class MetroDAO {
 
 			while (rs.next()) {
 				Fermata f = new Fermata(rs.getInt("id_Fermata"), rs.getString("nome"),
-						new LatLng(rs.getDouble("coordx"), rs.getDouble("coordy")));
+						new LatLng(rs.getDouble("coordx"), rs.getDouble("coordy")));	//libreria che fornisce un oggetto di tipo latitudine/longitudine che rappresenta una coordinata
 				fermate.add(f);
 			}
 
@@ -77,7 +77,7 @@ public class MetroDAO {
 	 * @return
 	 */
 	public boolean isFermateConnesse(Fermata partenza, Fermata arrivo) {
-		String sql = "SELECT COUNT(*) AS cnt "
+		final String sql = "SELECT COUNT(*) AS cnt "
 				+ "FROM connessione "
 				+ "WHERE id_stazP=? "
 				+ "AND id_stazA=? " ;
@@ -90,7 +90,7 @@ public class MetroDAO {
 			res.first();
 			int count = res.getInt("cnt");
 			conn.close();
-			return count>0 ;
+			return count>0;		//ritorna true se count>0, false altrimenti
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Errore Database", e);
@@ -99,7 +99,7 @@ public class MetroDAO {
 	}
 
 	public List<Integer> getIdFermateConnesse(Fermata partenza) {
-		String sql = "SELECT id_stazA "
+		final String sql = "SELECT id_stazA "
 				+ "FROM connessione "
 				+ "WHERE id_stazP=? "
 				+ "GROUP BY id_stazA" ;
@@ -122,6 +122,7 @@ public class MetroDAO {
 	}
 	
 	public List<Fermata> getFermateConnesse(Fermata partenza) {
+		//query di 1 facendo IN sulla query di 2a
 		final String sql = "SELECT id_fermata, nome, coordx, coordy "
 				+ "FROM fermata "
 				+ "WHERE id_fermata IN ( "
@@ -158,7 +159,7 @@ public class MetroDAO {
 	}
 	
 	public List<CoppiaId> getAllFermateConnesse() {
-		String sql = "SELECT DISTINCT id_stazP, id_stazA "
+		final String sql = "SELECT DISTINCT id_stazP, id_stazA "
 				+ "FROM connessione" ;
 		
 		Connection conn = DBConnect.getConnection() ;

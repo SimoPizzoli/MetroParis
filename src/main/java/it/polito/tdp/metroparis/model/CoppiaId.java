@@ -5,7 +5,6 @@ public class CoppiaId {
 	int idArrivo ;
 	
 	public CoppiaId(int idPartenza, int idArrivo) {
-		super();
 		this.idPartenza = idPartenza;
 		this.idArrivo = idArrivo;
 	}
