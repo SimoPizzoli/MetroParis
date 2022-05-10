@@ -6,10 +6,14 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.metroparis.model.Fermata;
 import it.polito.tdp.metroparis.model.Model;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MetroController {
 	
@@ -26,6 +30,12 @@ public class MetroController {
 
     @FXML
     private ComboBox<Fermata> boxPartenza;
+    
+    @FXML
+    private TableColumn<Fermata, String> colFermata;
+
+    @FXML
+    private TableView<Fermata> tblPercorso;
 
     @FXML
     private TextArea txtResult;
@@ -38,7 +48,10 @@ public class MetroController {
     	
     	if(partenza!=null && arrivo!=null && !partenza.equals(arrivo)) {
     		List<Fermata> percorso = model.calcolaPercorso(partenza, arrivo) ;
-    		txtResult.setText(percorso.toString());
+    		
+    		tblPercorso.setItems(FXCollections.observableArrayList(percorso));
+    		
+    		txtResult.setText("Percorso trovato con "+percorso.size()+" stazioni\n");
     	} else {
     		txtResult.setText("Devi selezionare due stazioni, diverse tra loro\n");
     	}
@@ -58,6 +71,9 @@ public class MetroController {
 		List<Fermata> fermate = this.model.getFermate() ;
 		boxPartenza.getItems().addAll(fermate) ;
 		boxArrivo.getItems().addAll(fermate) ;
+		
+		//questa cosa va fatto per ogni colonna: specificare il tipo della colonna e qual è la proprietà dell'oggetto riga che voglio visualizzare nella colonna
+		colFermata.setCellValueFactory(new PropertyValueFactory<Fermata, String>("nome"));
 	}
 
 }

@@ -16,6 +16,7 @@ public class EntryPoint extends Application {
         Parent root = loader.load();
         
     	Model m = new Model();
+    	
     	MetroController c = loader.getController() ;
     	c.setModel(m);
     	
